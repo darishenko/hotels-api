@@ -11,9 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.test.hotelsapi.enums.SearchCriteria;
 import org.test.hotelsapi.entity.Amenity;
 import org.test.hotelsapi.entity.Hotel;
+import org.test.hotelsapi.enums.SearchCriteria;
 import org.test.hotelsapi.exception.InvalidSearchCriteriaException;
 import org.test.hotelsapi.exception.hotel.DuplicateHotelException;
 import org.test.hotelsapi.exception.hotel.HotelNotFoundException;
@@ -30,6 +30,7 @@ public class DefaultHotelService implements HotelService {
 
     private final AmenityService amenityService;
     private final HotelRepository hotelRepository;
+    private final HotelSpecification hotelSpecification;
 
     @Override
     public Hotel get(long id) {
@@ -53,7 +54,7 @@ public class DefaultHotelService implements HotelService {
             }
         });
 
-        return hotelRepository.findAll(HotelSpecification.getSpecification(searchCriteriaListMap));
+        return hotelRepository.findAll(hotelSpecification.getSpecification(searchCriteriaListMap));
     }
 
     @Override

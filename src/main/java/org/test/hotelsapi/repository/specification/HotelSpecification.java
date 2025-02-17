@@ -8,15 +8,17 @@ import jakarta.persistence.criteria.Root;
 import java.util.List;
 import java.util.Map;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.test.hotelsapi.enums.SearchCriteria;
 import org.test.hotelsapi.entity.Hotel;
+import org.test.hotelsapi.enums.SearchCriteria;
 
+@Component
 public class HotelSpecification {
     private static final String ADDRESS = "address";
     private static final String NAME = "name";
 
-    public static Specification<Hotel> getSpecification(Map<SearchCriteria, List<String>> criteria) {
+    public Specification<Hotel> getSpecification(Map<SearchCriteria, List<String>> criteria) {
         return (Root<Hotel> hotel, CriteriaQuery<?> query, CriteriaBuilder cb) -> {
             Predicate predicate = cb.conjunction();
             for (Map.Entry<SearchCriteria, List<String>> entry : criteria.entrySet()) {
@@ -37,8 +39,8 @@ public class HotelSpecification {
         };
     }
 
-    private static Predicate addInQuery(Predicate predicate, CriteriaBuilder cb, Path<String> field,
-                                        List<String> values) {
+    private Predicate addInQuery(Predicate predicate, CriteriaBuilder cb, Path<String> field,
+                                 List<String> values) {
         List<String> lowerValues = values.stream()
                 .map(String::toLowerCase)
                 .toList();
